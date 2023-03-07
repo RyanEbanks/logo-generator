@@ -5,8 +5,11 @@ const fs = require("fs");
 //Importing the shapes.js file to use its content
 const {Shape, Triangle, Square, Circle} = require("./lib/shapes");
 
-const questions = ["Enter text for the SVG (No more than 3 characters): ", "Enter the color of your text (hexadecimals allowed): ", "Enter the shape for your logo: ",
-"Enter the color of your shape (hexadecimals allowed): "];
+//Importing Object with a bunch of color inputs
+const colorData = require("./lib/color");
+
+const questions = ["Enter text for the SVG (No more than 3 characters): ", "Enter the Color of your Text (hexadecimals allowed): ", "Enter the shape for your logo: ",
+"Enter the Color of your Shape (hexadecimals allowed): "];
 
 function writeToFile(filename, data) {
     fs.writeFile(filename, data, (error, data) => {
@@ -36,20 +39,20 @@ function start() {
     {
         type: "input",
         name: "textColor",
-        message: questions[1]
-    //     validate: (colorInput) => {
-    //         if(colorInput) {
-    //             let regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-    //             if(regex.test(colorInput) || colorChecker(colorInput)) {
-    //                 return true;
-    //             } else {
-    //                 console.log("\n Please enter an actual color or hexa equivalent.");
-    //                 return false;
-    //         }
-    //     } if(!colorInput) {
-    //         return false;
-    //     }
-    // }
+        message: questions[1],
+        validate: (colorInput) => {
+            if(colorInput) {
+                let regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                if(regex.test(colorInput) || colorChecker(colorInput)) {
+                    return true;
+                } else {
+                    console.log("\n Please enter an actual color or hexa equivalent.");
+                    return false;
+            }
+        } if(!colorInput) {
+            return false;
+        }
+    }
     },
     {
         type: "rawlist",
@@ -60,7 +63,20 @@ function start() {
     {
         type: "input",
         name: "logoColor",
-        message: questions[3]
+        message: questions[3],
+        validate: (logoColorInput) => {
+            if(logoColorInput) {
+                let regex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
+                if(regex.test(logoColorInput) || colorChecker(logoColorInput)) {
+                    return true;
+                } else {
+                    console.log("\n Please enter an actual color or hexa equivalent.");
+                    return false;
+            }
+        } if(!logoColorInput) {
+            return false;
+        }
+    }
     }
     ]).then((res) => {
         console.log("Logo Shape from the index page: " + res.logoShape);
@@ -91,8 +107,15 @@ function generateShapes(answer) {
 
 //Function to test for a valid color
 function colorChecker(grabColor){
- const colorToConvert = grabColor;
+ //Trims white spaces and converts the name to lowercase
+ const colorName = grabColor.trim().toLowerCase();
 
+ //If the color we provided is listed in the color object in color.js then we return it
+    if(colorName in colorData) {
+        return colorName;
+    } else {
+        return false;
+    }
 }
 //Calling the function to run
 start();
