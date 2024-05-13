@@ -2,7 +2,7 @@
 This project requires me to build a Node.js command-line application that takes in user input to generate a logo and save it as an SVG file.
 
 ## Video Link
-[Click Here!](https://youtu.be/0NBP3n5EtkI)
+[Click Here!](https://youtu.be/svDOBfaCS2g)
 
 ## Description
 This program prompts you with various questions to create a logo based on 3 different shapes, a triangle, a square and a circle. 
